@@ -92,7 +92,8 @@
       }
       function checkOverlap() {
         if (xmine === x && ymine === y) {
-          drawMine("red")
+          c = "red"
+          setTimeout(drawMine(c) , 1000);
           setTimeout(alert("U Landed On A Mine ") , 1000)
         }
         ///dolev
