@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 style="text-align: center;">hit the point!</h1>
+    <h3 style="text-align: center;">
+      use the arrow keys to move the black ball to the yellow ball
+    </h3>
+    <div id="msg"></div>
+    <div style="margin-left: 35%;">
+      <canvas
+        id="canvas"
+        width="400px"
+        height="400px"
+        style="border: 5px solid #000;"
+      >
+      </canvas>
+    </div>
+
+    <script>
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      x = 10;
+      y = 10;
+
+      //   function showXY(e) {
+      //     console.log(e.x, e.y);
+      //     setPosition(e.x , e.y)
+      //   }
+      var xmine = 200;
+      var ymine = 200;
+      var c = "green"
+      function drawMine() {
+        ctx.beginPath(c);
+        ctx.arc(xmine, ymine, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = c;
+        ctx.fill();
+      }
+      drawMine(c);
+      function player(x, y) {
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = "black";
+        ctx.fill();
+      }
+      player(x, y);
+      document.addEventListener("keydown", moveplayer);
+      function moveplayer(e) {
+        if (e.keyCode === 38 && canvas.height > 10) {
+          console.log("up");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawMine(c);
+          y = y - 10;
+          player(x, (y = y - 10));
+
+          // ctx.beginPath();
+          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
+          // ctx.fill();
+        } else if (e.keyCode === 37 && canvas.width > 10) {
+          console.log("left");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawMine(c);
+          player((x = x - 10), y);
+          // x = x - 10;
+          // ctx.beginPath();
+          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
+          // ctx.fill();
+        } else if (e.keyCode === 39 && canvas.width - 10 > x) {
+          console.log("right");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawMine(c);
+          player((x = x + 10), y);
+          // x = x + 10;
+          // ctx.beginPath();
+          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
+          // ctx.fill();
+        } else if (e.keyCode === 40 && canvas.height - 10 > y) {
+          console.log("down");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawMine(c);
+          player(x, (y = y + 10));
+          // y = y + 10;
+          // ctx.beginPath();
+          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
+          // ctx.fill();
+        }
+        checkOverlap();
+      }
+      function checkOverlap() {
+        if (xmine === x && ymine === y) {
+          drawMine("red")
+          setTimeout(alert("U Landed On A Mine ") , 1000)
+        }
+        ///dolev
+      }
+    </script>
+  </body>
+</html>
