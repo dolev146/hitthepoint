@@ -24,79 +24,111 @@
     <script>
       var canvas = document.getElementById("canvas");
       var ctx = canvas.getContext("2d");
+
+      // first draw the player
+
+      //starting values
       x = 10;
       y = 10;
+      var size = 10;
+      function player(x, y, color = "black" ) {
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.closePath();
+        ctx.fill();
+      }
 
-      //   function showXY(e) {
-      //     console.log(e.x, e.y);
-      //     setPosition(e.x , e.y)
-      //   }
-      var xmine = 200;
-      var ymine = 200;
-      var c = "green"
+      // run the function
+      player(x, y);
+
+      // player move
+
+      document.addEventListener("keydown", moveplayer);
+      function moveplayer(e) {
+        if (e.keyCode === 38 && canvas.height >= size) {
+          //console.log("up");
+          //clear
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          //draw plater
+          drawMine(c);
+          player(x, (y = y - size * 2));
+        } else if (e.keyCode === 37 && canvas.width > 10) {
+          //console.log("left");
+          // clear
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // draw player
+          player((x = x - size * 2), y);
+          drawMine(c);
+        } else if (e.keyCode === 39 && canvas.width - 10 > x) {
+          //console.log("right");
+          //clear
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // draw player
+          player((x = x + size * 2), y);
+          drawMine(c);
+        } else if (e.keyCode === 40 && canvas.height - 10 > y) {
+          //console.log("down");
+          //clear
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawMine(c);
+          player(x, (y = y + size * 2));
+        }
+        setTimeout(checkOverlap, 50);
+      }
+
+      function setXYforMine() {
+        xmine = size * Math.ceil(Math.random() * canvas.width);
+        ymine = size * Math.ceil(Math.random() * canvas.height);
+      }
+      //making the array for the spots the Mine can be placed randomly
+      var placeX = [];
+      var k = size;
+      for (var i = 0; i < canvas.width / size / 2; i++) {
+        placeX.push(k);
+        k = k + size * 2;
+      }
+      console.log(placeX);
+      var placeY = [];
+      var f = size;
+      for (var i = 0; i < canvas.height / size / 2; i++) {
+        placeY.push(f);
+        f = f + size * 2;
+      }
+      console.log(placeX);
+      var posx = placeX[Math.floor((Math.random() * canvas.width) / size / 2)];
+      var posy = placeY[Math.floor((Math.random() * canvas.height) / size / 2)];
+      var xmine = posx;
+      var ymine = posy;
+      console.log(xmine);
+      console.log(ymine);
+
+      var c = "green";
       function drawMine() {
         ctx.beginPath(c);
-        ctx.arc(xmine, ymine, 10, 0, 2 * Math.PI);
+        ctx.arc(xmine, ymine, size, 0, 2 * Math.PI);
         ctx.fillStyle = c;
+        ctx.closePath();
         ctx.fill();
       }
       drawMine(c);
-      function player(x, y) {
+
+      function createMine(c = "blue") {
+        xmine = placeX[Math.floor((Math.random() * canvas.width) / size / 2)];
+        ymine = placeY[Math.floor((Math.random() * canvas.height) / size / 2)];
         ctx.beginPath();
-        ctx.arc(x, y, 10, 0, 2 * Math.PI);
-        ctx.fillStyle = "black";
+        ctx.arc(xmine, ymine, size, 0, 2 * Math.PI);
+        ctx.fillStyle = c;
+        ctx.closePath();
         ctx.fill();
       }
-      player(x, y);
-      document.addEventListener("keydown", moveplayer);
-      function moveplayer(e) {
-        if (e.keyCode === 38 && canvas.height > 10) {
-          console.log("up");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          drawMine(c);
-          y = y - 10;
-          player(x, (y = y - 10));
 
-          // ctx.beginPath();
-          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
-          // ctx.fill();
-        } else if (e.keyCode === 37 && canvas.width > 10) {
-          console.log("left");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          drawMine(c);
-          player((x = x - 10), y);
-          // x = x - 10;
-          // ctx.beginPath();
-          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
-          // ctx.fill();
-        } else if (e.keyCode === 39 && canvas.width - 10 > x) {
-          console.log("right");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          drawMine(c);
-          player((x = x + 10), y);
-          // x = x + 10;
-          // ctx.beginPath();
-          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
-          // ctx.fill();
-        } else if (e.keyCode === 40 && canvas.height - 10 > y) {
-          console.log("down");
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          drawMine(c);
-          player(x, (y = y + 10));
-          // y = y + 10;
-          // ctx.beginPath();
-          // ctx.arc(x, y, 10, 0, 2 * Math.PI);
-          // ctx.fill();
-        }
-        checkOverlap();
-      }
       function checkOverlap() {
         if (xmine === x && ymine === y) {
-          c = "red"
-          setTimeout(drawMine(c) , 3000);
-          setTimeout(alert("U Landed On A Mine ") , 1000)
+          c = "red";
+          createMine();
+          pla
         }
-        ///dolev
       }
     </script>
   </body>
